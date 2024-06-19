@@ -1,0 +1,30 @@
+version: '4.0'
+services:
+
+  server:
+    image: backend
+    container_name: 'cloud-storage'
+    build: ./
+    ports:
+      - "5050:5050"
+    depends_on:
+      - database
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgres://database:5432/mrx_db
+      SPRING_DATASOURCE_USERNAME: mrx
+      SPRING_DATASOURCE_PASSWORD: 123
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_LIQUIBASE_URL: jdbc:postgres://database:5432/mrx_db
+      SPRING_LIQUIBASE_USER: mrx
+      SPRING_LIQUIBASE_PASSWORD: 123
+
+  database:
+    image: postgres:latest
+    restart: always
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: 'mrx_db'
+      POSTGRES_USER: 'mrx'
+      POSTGRES_PASSWORD: '123'
